@@ -1,0 +1,23 @@
+
+xmonad.hs:27:1: warning: [-Wtabs]
+    Tab character found here, and in 130 further locations.
+    Please use spaces instead.
+   |
+27 |         manageDocks 
+   | ^^^^^^^^
+
+xmonad.hs:141:14: warning: [-Wdeprecations]
+    In the use of ‘defaultConfig’
+    (imported from XMonad, but defined in XMonad.Config):
+    Deprecated: "Use def (from Data.Default, and re-exported by XMonad and XMonad.Config) instead."
+    |
+141 |     xmonad $ defaultConfig
+    |              ^^^^^^^^^^^^^
+
+xmonad.hs:149:45: warning: [-Wdeprecations]
+    In the use of ‘defaultConfig’
+    (imported from XMonad, but defined in XMonad.Config):
+    Deprecated: "Use def (from Data.Default, and re-exported by XMonad and XMonad.Config) instead."
+    |
+149 |                           , handleEventHook defaultConfig ]
+    |                                             ^^^^^^^^^^^^^

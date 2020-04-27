@@ -1,0 +1,7 @@
+
+xmobar.hs:1:1: error:
+    Parse error: module header, import declaration
+    or top-level declaration expected.
+  |
+1 | Config { 
+  | ^^^^^^^^^...

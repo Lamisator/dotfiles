@@ -1,0 +1,85 @@
+import XMonad
+import XMonad.Actions.SpawnOn
+import XMonad.Hooks.DynamicLog
+import XMonad.Hooks.ManageHelpers
+import XMonad.Hooks.FadeInactive
+import XMonad.Hooks.ManageDocks
+import XMonad.Hooks.EwmhDesktops(fullscreenEventHook,ewmh)
+import XMonad.Layout.Grid
+import XMonad.Layout.ResizableTile
+import XMonad.Layout.LayoutHints
+import XMonad.Layout.Cross
+import XMonad.Layout.ToggleLayouts
+import XMonad.Layout.WindowNavigation
+import XMonad.Layout.NoBorders
+import XMonad.Util.Run(spawnPipe)
+import qualified XMonad.StackSet as S
+import XMonad.Util.EZConfig(additionalKeys)
+import System.IO
+ 
+myManageHook = manageDocks <+> manageSpawn <+> composeAll [ isFullscreen --> doFullFloat
+    , className =? "Gimp" --> doFloat
+    , className =? "Vncviewer" --> doFloat
+    , className =? "PrisonArchitect.x86_64" --> doFullFloat
+    , className =? "hl_linux" --> doFloat
+    , className =? "hl2_linux" --> doFloat
+    , className =? "chromium" --> doFloat
+    , className =? "Gajim" --> doShift "ι"
+    , className =? "Thunderbird" --> doShift "θ"
+    ]
+ 
+myWorkspaces    = ["α","β","γ","δ","ε","ζ","η","θ","ι"]
+
+myLogHook xmproc = do
+	fadeInactiveLogHook 0.8 
+	<+> dynamicLogWithPP xmobarPP
+	{ ppOutput = hPutStrLn xmproc
+	, ppTitle = xmobarColor "#01b8e0" "" . shorten 50
+	}
+
+myTerminal	= "terminology"
+
+
+myLayout = tiled ||| Mirror tiled ||| Full ||| Grid   where
+     -- default tiling algorithm partitions the screen into two panes
+     tiled   = Tall nmaster delta ratio
+
+ 
+     -- The default number of windows in the master pane
+     nmaster = 1
+ 
+     -- Default proportion of screen occupied by master pane
+     ratio   = 1/2
+ 
+     -- Percent of screen to increment by when resizing panes
+     delta   = 2/100
+ 
+
+main = do
+    xmproc <- spawnPipe "xmobar ~/.xmonad/xmobar.hs"
+    xmonad $ defaultConfig
+        { manageHook = myManageHook -- make sure to include myManageHook definition from above
+--                        <+> manageHook defaultConfig
+        , layoutHook = avoidStruts  $  smartBorders $ myLayout
+        , handleEventHook = mconcat
+                          [ docksEventHook
+                          , fullscreenEventHook
+                          , handleEventHook defaultConfig ]
+        , logHook = myLogHook xmproc
+        , modMask = mod4Mask     -- Rebind Mod to the Windows key
+	, terminal = myTerminal
+	, workspaces = myWorkspaces
+        } `additionalKeys`
+        [ ((mod4Mask .|. shiftMask, xK_l), spawn "xscreensaver-command -lock")
+	, ((mod4Mask .|. shiftMask, xK_r), spawn "terminology -e ranger")
+	, ((mod4Mask .|. shiftMask, xK_f), spawn "firefox")
+	, ((mod4Mask , 		xK_q), spawn "killall xmobar; xmonad --recompile; xmonad --restart")
+	, ((0                     , 0x1008FF11), spawn "amixer -q sset Master 2%-")
+	, ((0                     , 0x1008FF13), spawn "amixer -q sset Master 2%+")
+      	, ((0                     , 0x1008FF12), spawn "amixer set Master toggle")
+       	, ((0                     , 0x1008FF03), spawn "xbacklight -dec 5")
+     	, ((0                     , 0x1008FF02), spawn "xbacklight -inc 5")
+
+        , ((controlMask, xK_Print), spawn "sleep 0.2; scrot -s")
+        , ((0, xK_Print), spawn "scrot")
+        ]
