@@ -18,7 +18,7 @@ trayer --edge top --align right --SetDockType true --SetPartialStrut true  --exp
 compton --config .compton.conf &
 
 
-# Set the background color<
+# Set the background color
  
 xsetroot -solid midnightblue
  
@@ -38,9 +38,9 @@ if [ -x /usr/bin/nm-applet ] ; then
    nm-applet --sm-disable &
 fi
  
-if [ -x /usr/bin/gnome-power-manager ] ; then
-   sleep 3
-   gnome-power-manager &
-fi
+#if [ -x /usr/bin/gnome-power-manager ] ; then
+#   sleep 3
+#   gnome-power-manager &
+#fi
  
 # exec xmonad
