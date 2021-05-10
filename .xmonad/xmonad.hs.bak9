@@ -77,7 +77,7 @@ myScratchPads = [ NS "mixer"	spawnMixer findMixer manageMixer
 
 		 where
 
-			h = 0.5    -- terminal height, 20%
+			h = 0.4    -- terminal height, 20%
 			w = 0.7       -- terminal width, 70%
 			t = 1 - h   -- distance from top edge
 			l = (1 - w)/2   -- distance from left edge
